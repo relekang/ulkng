@@ -66,8 +66,9 @@ class Details:
         else:
             raise web.notfound()
 
-
 app = web.application(urls, globals())
+
+application = app.wsgifunc()
 
 if __name__ == "__main__":
     app.run()
