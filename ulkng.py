@@ -1,12 +1,14 @@
 # -*- coding: utf8 -*-
 import hashlib
-
+from redis import ConnectionPool
+from redis.client import Redis
 import web
 from web import form
-from redis.client import Redis
+
 
 web.config.debug = False
 render = web.template.render('templates/')
+redis_pool = ConnectionPool(host='localhost', port=6379, db=1)
 
 urls = (
     '/', 'Add',
@@ -31,7 +33,7 @@ class Add:
         if not form.validates():
             return render.formtest(form)
 
-        r = Redis()
+        r = Redis(connection_pool=redis_pool)
         url = form['url'].value
         token = hashlib.sha1()
         token.update(url.replace('http(s)?://', '').strip())
@@ -44,7 +46,7 @@ class Add:
 
 class Redirect:
     def GET(self, key):
-        r = Redis()
+        r = Redis(connection_pool=redis_pool)
         url = r.get(key)
         if url:
             r.incr('%scount' % key)
@@ -55,7 +57,7 @@ class Redirect:
 class Details:
     def GET(self, key):
         print "details"
-        r = Redis()
+        r = Redis(connection_pool=redis_pool)
         url = r.get(key)
         if url:
             count = r.get('%scount' % key)
