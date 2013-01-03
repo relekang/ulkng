@@ -25,6 +25,10 @@ url_form = form.Form(
 
 class Add:
     def GET(self):
+        r = Redis(connection_pool=redis_pool)
+        if web.input().token != r.get("%stoken" % PREFIX):
+            raise web.notfound()
+
         form = url_form()
         return render.formtest(form)
 
