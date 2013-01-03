@@ -12,7 +12,7 @@ redis_pool = ConnectionPool(host='localhost', port=6379, db=1)
 
 urls = (
     '/', 'NotFound',
-    '/add', 'Add',
+#    '/add', 'Add',
     '/(.*)/\+', 'Details',
     '/(.*)/', 'Redirect',
     '/(.*)', 'Redirect',
