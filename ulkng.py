@@ -11,6 +11,13 @@ web.config.debug = False
 render = web.template.render('templates/')
 redis_pool = ConnectionPool(host='localhost', port=6379, db=1)
 
+def check_token(r):
+    try:
+        if web.input().token != r.get("%stoken" % PREFIX):
+            raise web.notfound()
+    except AttributeError:
+        raise web.notfound()
+
 urls = (
     '/', 'NotFound',
     '/add', 'Add',
@@ -23,11 +30,11 @@ url_form = form.Form(
     form.Textbox("url"),
 )
 
+
 class Add:
     def GET(self):
         r = Redis(connection_pool=redis_pool)
-        if web.input().token != r.get("%stoken" % PREFIX):
-            raise web.notfound()
+        check_token(r)
 
         form = url_form()
         return render.formtest(form)
@@ -35,8 +42,7 @@ class Add:
     def POST(self):
         r = Redis(connection_pool=redis_pool)
 
-        if web.input().token != r.get("%stoken" % PREFIX):
-            raise web.notfound()
+        check_token(r)
 
         form = url_form()
 
