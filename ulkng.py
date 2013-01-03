@@ -11,7 +11,7 @@ render = web.template.render('templates/')
 redis_pool = ConnectionPool(host='localhost', port=6379, db=1)
 
 urls = (
-    '/', 'Add',
+    '/', 'NotFound',
     '/add', 'Add',
     '/(.*)/\+', 'Details',
     '/(.*)/', 'Redirect',
@@ -65,6 +65,10 @@ class Details:
             return render.details(key, url, count)
         else:
             raise web.notfound()
+
+class NotFound:
+    def GET(self):
+        raise web.notfound()
 
 app = web.application(urls, globals())
 
