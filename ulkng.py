@@ -5,7 +5,7 @@ from redis.client import Redis
 import web
 from web import form
 
-PREFIX = "ulkng"
+PREFIX = "ulkng:"
 
 web.config.debug = False
 render = web.template.render('templates/')
