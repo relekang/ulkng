@@ -5,6 +5,7 @@ from redis.client import Redis
 import web
 from web import form
 
+PREFIX = "ulkng"
 
 web.config.debug = False
 render = web.template.render('templates/')
@@ -12,7 +13,7 @@ redis_pool = ConnectionPool(host='localhost', port=6379, db=1)
 
 urls = (
     '/', 'NotFound',
-#    '/add', 'Add',
+    '/add', 'Add',
     '/(.*)/\+', 'Details',
     '/(.*)/', 'Redirect',
     '/(.*)', 'Redirect',
@@ -28,12 +29,16 @@ class Add:
         return render.formtest(form)
 
     def POST(self):
+        r = Redis(connection_pool=redis_pool)
+
+        if web.input().token != r.get("%stoken" % PREFIX):
+            raise web.notfound()
+
         form = url_form()
 
         if not form.validates():
             return render.formtest(form)
 
-        r = Redis(connection_pool=redis_pool)
         url = form['url'].value
         token = hashlib.sha1()
         token.update(url.replace('http(s)?://', '').strip())
