@@ -1,23 +1,6 @@
 $def with (form)
-<!DOCTYPE html>
-<html>
-<head>
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-</head>
-<body>
-<section class="row-fluid">
-    <div class="span3">
-    </div>
-    <div class="span6">
-
-        <form class="form-inline" name="main" method="post">
-            $if not form.valid: <p class="error">Try again</p>
-            <input type="text" name="url" class="input-medium" placeholder="URL">
-            <button type="submit" class="btn">Add</button>
-            </form>
-    </div>
-    <div class="span3">
-    </div>
-</section>
-</body>
-</html>
+    <form class="form-inline" name="main" method="post">
+        $if not form.valid: <p class="error">Try again</p>
+        <input type="text" name="url" class="input-medium" placeholder="URL">
+        <button type="submit" class="btn">Add</button>
+    </form>

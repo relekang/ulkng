@@ -8,7 +8,7 @@ from web import form
 PREFIX = "ulkng:"
 
 web.config.debug = False
-render = web.template.render('templates/')
+render = web.template.render('templates/', base='base')
 redis_pool = ConnectionPool(host='localhost', port=6379, db=1)
 
 def check_token(r):
