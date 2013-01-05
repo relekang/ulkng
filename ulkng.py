@@ -23,6 +23,7 @@ def check_token(r):
 urls = (
     '/', 'NotFound',
     '/add/', 'Add',
+    '/all/', 'ViewAll',
     '/(.*)/\+', 'ViewDetails',
     '/(.*)/', 'Redirect',
     '/(.*)', 'Redirect',
@@ -32,6 +33,20 @@ url_form = form.Form(
     form.Textbox("url"),
 )
 
+class ViewAll:
+    def GET(self):
+        r = Redis(connection_pool=redis_pool)
+        check_token(r)
+
+        all_keys = r.hgetall(URL_HASH_NAME)
+        url_list = []
+
+        for key in all_keys:
+            url_list.append(
+                (all_keys[key], key, r.hget(COUNT_HASH_NAME, key) or 0),
+            )
+
+        return render.list(url_list)
 
 class Add:
     def GET(self):
