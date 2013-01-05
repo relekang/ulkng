@@ -6,6 +6,8 @@ import web
 from web import form
 
 PREFIX = "ulkng:"
+URL_HASH_NAME = "url"
+COUNT_HASH_NAME = "url:count"
 
 web.config.debug = False
 render = web.template.render('templates/', base='base')
@@ -20,8 +22,8 @@ def check_token(r):
 
 urls = (
     '/', 'NotFound',
-    '/add', 'Add',
-    '/(.*)/\+', 'Details',
+    '/add/', 'Add',
+    '/(.*)/\+', 'ViewDetails',
     '/(.*)/', 'Redirect',
     '/(.*)', 'Redirect',
 )
@@ -54,28 +56,28 @@ class Add:
         token.update(url.replace('http(s)?://', '').strip())
         key = token.hexdigest()[:6]
         print key + url
-        r.set(key, url)
-        r.set('%scount' % key, 0)
+        r.hset(URL_HASH_NAME, key, url)
+        r.hset(COUNT_HASH_NAME, key, 0)
 
         raise web.seeother('/%s/+' % key)
 
 class Redirect:
     def GET(self, key):
         r = Redis(connection_pool=redis_pool)
-        url = r.get(key)
+        url = r.hget(URL_HASH_NAME, key)
         if url:
-            r.incr('%scount' % key)
+            r.hincrby(COUNT_HASH_NAME, key)
             raise web.seeother(url)
         else:
             raise web.notfound()
 
-class Details:
+class ViewDetails:
     def GET(self, key):
         print "details"
         r = Redis(connection_pool=redis_pool)
-        url = r.get(key)
+        url = r.hget(URL_HASH_NAME, key)
         if url:
-            count = r.get('%scount' % key)
+            count = r.hget(COUNT_HASH_NAME, key)
 
             return render.details(key, url, count)
         else:
