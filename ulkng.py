@@ -22,6 +22,7 @@ def check_token(r):
 
 urls = (
     '/', 'NotFound',
+    '/favicon.ico', 'NotFound',
     '/add/', 'Add',
     '/all/', 'ViewAll',
     '/(.*)/\+', 'ViewDetails',
