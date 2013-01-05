@@ -21,7 +21,7 @@ def check_token(r):
         raise web.notfound()
 
 urls = (
-    '/', 'NotFound',
+    '/', 'Index',
     '/favicon.ico', 'NotFound',
     '/add/', 'Add',
     '/all/', 'ViewAll',
@@ -33,6 +33,16 @@ urls = (
 url_form = form.Form(
     form.Textbox("url"),
 )
+
+class Index:
+    def GET(self):
+        r = Redis(connection_pool=redis_pool)
+
+        count = 0
+        for key in r.hgetall(URL_HASH_NAME):
+            count += 1
+
+        return render.index(count)
 
 class ViewAll:
     def GET(self):
