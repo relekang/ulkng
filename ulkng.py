@@ -2,23 +2,14 @@
 import hashlib
 from redis import ConnectionPool
 from redis.client import Redis
+from utils import render_template, URL_HASH_NAME, COUNT_HASH_NAME, check_token, LOG_HASH_NAME, TOKEN_HASH_NAME
 import web
 from web import form
 
-PREFIX = "ulkng:"
-URL_HASH_NAME = "url"
-COUNT_HASH_NAME = "url:count"
 
 web.config.debug = False
 render = web.template.render('templates/', base='base')
 redis_pool = ConnectionPool(host='localhost', port=6379, db=1)
-
-def check_token(r):
-    try:
-        if web.input().token != r.get("%stoken" % PREFIX):
-            raise web.notfound()
-    except AttributeError:
-        raise web.notfound()
 
 urls = (
     '/', 'Index',
@@ -82,8 +73,10 @@ class Add:
         token.update(url.replace('http(s)?://', '').strip())
         key = token.hexdigest()[:6]
         print key + url
-        r.hset(URL_HASH_NAME, key, url)
-        r.hset(COUNT_HASH_NAME, key, 0)
+        if not r.hget(URL_HASH_NAME, key):
+            r.hset(URL_HASH_NAME, key, url)
+            r.hset(COUNT_HASH_NAME, key, 0)
+            r.hset(LOG_HASH_NAME, key, r.hget(TOKEN_HASH_NAME, web.input().token))
 
         raise web.seeother('/%s/+' % key)
 
@@ -99,7 +92,6 @@ class Redirect:
 
 class ViewDetails:
     def GET(self, key):
-        print "details"
         r = Redis(connection_pool=redis_pool)
         url = r.hget(URL_HASH_NAME, key)
         if url:
