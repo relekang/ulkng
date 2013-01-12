@@ -1,19 +1,27 @@
-$def with (content)
 <!DOCTYPE html>
 <html>
 <head>
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="/static/ulkng.css" rel="stylesheet">
 </head>
 <body>
-<section class="row-fluid">
-    <div class="span3">
-    </div>
-    <div class="span6" style="text-align: center;margin-top: 100px;">
-        $:content
-    </div>
-    <div class="span3">
+{% if user_id %}
+    <nav>
+        <div class="btn-group btn-toolbar">
+            <a href="/all/?token={{ user_id[1] }}" class="btn{% if is_all %} active{% endif %}">URLs</a>
+            <a href="/add/?token={{ user_id[1] }}" class="btn{% if is_add %} active{% endif %}">Add</a>
+        </div>
+    </nav>
+{% endif %}
+<section class="row-fluid {{ section_class }}">
+    <div id="content" class="span12 well">
+        {% block content %}
+        {% endblock %}
     </div>
 </section>
-<a href="http://u.lkng.me/b46d22/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+<footer class="row-fluid">
+    {% if user_id %}
+        <div class="span12">You are identified as: {{ user_id[0] }}</div>{% endif %}
+</footer>
 </body>
 </html>

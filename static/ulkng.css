@@ -1,0 +1,6 @@
+body{background-image:url('/static/wild_oliva.png');}@media all and (-webkit-min-device-pixel-ratio:1.5){body{background-image:url('/static/wild_oliva@2x.png');background-size:198px 200px;}}body>.row-fluid{width:800px;margin:0 auto;}body>.row-fluid.index{width:600px;margin-top:100px;}
+.well{background:#f3f3f3;}
+nav{text-align:center;margin:100px auto 0 auto;width:150px;}nav ul.nav-pills li a{background:#f3f3f3;margin:0 10px;color:black;}
+#content{text-align:center;}#content #about p.lead{width:360px;margin:30px auto;text-align:justify;}
+footer{text-align:center;color:white;}
+.unimportant{color:silver;}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <form class="form-inline" name="main" method="post">
+        {% if not form.valid %}
+            <p class="error">Try again</p>
+        {% endif %}
+        <input type="text" name="url" class="input-xxlarge" placeholder="URL">
+        <button type="submit" class="btn">Add</button>
+    </form>
+{% endblock %}

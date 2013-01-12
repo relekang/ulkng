@@ -1,9 +1,16 @@
-$def with (count)
-<div class="well">
-    <h1>u.lkng.me</h1>
-    <p class="lead" style="width:360px; margin: 30px auto; text-align: justify;">
-        This is a url-shortener. This project was created to learn more about Redis and web.py.
-        It now holds shortcuts for <strong>$count</strong> urls.
-    </p>
-    <a class="btn btn-primary" href="http://u.lkng.me/b46d22">Check out the code on github</a>
-</div>
+{% extends "base.html" %}
+{% block content %}
+    <div id="about">
+        <h1>u.lkng.me</h1>
+
+        <p class="lead">
+            This is a url-shortener. This project was created to learn more about Redis and web.py.
+            It now holds shortcuts for <strong>{{ count }}</strong> urls.
+        </p>
+        <a class="btn btn-primary" href="http://u.lkng.me/b46d22">Check out the code on github</a>
+    </div>
+    <a href="http://u.lkng.me/b46d22/">
+        <img style="position: absolute; top: 0; right: 0; border: 0;"
+             src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+    </a>
+{% endblock %}

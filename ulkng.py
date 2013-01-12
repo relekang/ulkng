@@ -33,40 +33,52 @@ class Index:
         for key in r.hgetall(URL_HASH_NAME):
             count += 1
 
-        return render.index(count)
+        return render_template('index.html', count=count, section_class='index')
 
 class ViewAll:
     def GET(self):
         r = Redis(connection_pool=redis_pool)
-        check_token(r)
+        user_id = check_token(r)
 
         all_keys = r.hgetall(URL_HASH_NAME)
         url_list = []
 
         for key in all_keys:
             url_list.append(
-                (all_keys[key], key, r.hget(COUNT_HASH_NAME, key) or 0),
+                (
+                    all_keys[key].replace('http://', '').replace('https://', ''),
+                    key, r.hget(COUNT_HASH_NAME, key) or 0,
+                    r.hget(LOG_HASH_NAME, key) or ''
+                ),
             )
 
-        return render.list(url_list)
+        return render_template('list.html', user_id=user_id, list=url_list, is_all=True)
 
 class Add:
     def GET(self):
         r = Redis(connection_pool=redis_pool)
-        check_token(r)
+        user_id = check_token(r)
 
         form = url_form()
-        return render.formtest(form)
+        return render_template('add.html',
+            form=form,
+            user_id=user_id,
+            is_add=True,
+        )
 
     def POST(self):
         r = Redis(connection_pool=redis_pool)
 
-        check_token(r)
+        user_id = check_token(r)
 
         form = url_form()
 
         if not form.validates():
-            return render.formtest(form)
+            return render_template('add.html',
+                form=form,
+                user_id=user_id,
+                is_add=True,
+            )
 
         url = form['url'].value
         token = hashlib.sha1()
@@ -93,11 +105,20 @@ class Redirect:
 class ViewDetails:
     def GET(self, key):
         r = Redis(connection_pool=redis_pool)
+
+        user_id = check_token(r)
+
         url = r.hget(URL_HASH_NAME, key)
         if url:
             count = r.hget(COUNT_HASH_NAME, key)
 
-            return render.details(key, url, count)
+            return render_template('details.html',
+                user_id=user_id,
+                key=key,
+                url=url,
+                count=count,
+                section_class='index'
+            )
         else:
             raise web.notfound()
 

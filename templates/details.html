@@ -1,5 +1,6 @@
-$def with (key, url, count)
-
-<h1><span style="color:silver">u.lkng.me/</span>$key</h1>
-<strong>$url</strong>
-<p>Visited <span class="badge">$count</span> times</p>
+{% extends "base.html" %}
+{% block content %}
+    <h1><span class="unimportant">u.lkng.me/</span>{{ key }}</h1>
+    <strong>{{ url }}</strong>
+    <p>Visited <span class="badge">{{ count }}</span> times</p>
+{% endblock %}
