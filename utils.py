@@ -14,9 +14,9 @@ def check_token(r):
         if auth_token in tokens:
             return (tokens[auth_token], auth_token)
         else:
-            raise web.notfound()
+            raise notfound()
     except AttributeError:
-        raise web.notfound()
+        raise notfound()
 
 def render_template(template_name, **context):
     extensions = context.pop('extensions', [])
@@ -29,3 +29,6 @@ def render_template(template_name, **context):
     jinja_env.globals.update(globals)
 
     return jinja_env.get_template(template_name).render(context)
+
+def notfound():
+    return web.notfound(render_template('404.html', user_id=None, section_class='alert alert-error'))

@@ -2,7 +2,7 @@
 import hashlib
 from redis import ConnectionPool
 from redis.client import Redis
-from utils import render_template, check_token
+from utils import render_template, check_token, notfound
 from settings import REDIS_HOST, REDIS_PORT, REDIS_DB, URL_HASH_NAME, COUNT_HASH_NAME, LOG_HASH_NAME, TOKEN_HASH_NAME, DEBUG
 import web
 from web import form
@@ -107,7 +107,7 @@ class Redirect:
             r.hincrby(COUNT_HASH_NAME, key)
             raise web.seeother(url)
         else:
-            raise web.notfound()
+            raise notfound()
 
 class ViewDetails:
     def GET(self, key):
@@ -127,11 +127,11 @@ class ViewDetails:
                 section_class='index'
             )
         else:
-            raise web.notfound()
+            raise notfound()
 
 class NotFound:
     def GET(self):
-        raise web.notfound()
+        raise notfound()
 
 app = web.application(urls, globals())
 
