@@ -9,7 +9,6 @@ from web import form
 
 
 web.config.debug = False
-render = web.template.render('templates/', base='base')
 redis_pool = ConnectionPool(
     host=REDIS_HOST, 
     port=REDIS_PORT, 
