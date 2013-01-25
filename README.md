@@ -22,3 +22,8 @@ Download it from [redis.io](http://redis.io) or install it with apt-get, Homebre
 
 ## Usage
     python ulkng.py
+
+## Settings
+It is possible to add custom settings by adding a file `local_settings.py`
+
+`USE_TOKENS` - Default: True, when false no token is necessary to add, list all and view details about urls.
