@@ -4,6 +4,7 @@ REDIS_PORT = 6379
 REDIS_DB = 1
 
 USE_TOKENS = True
+DEBUG = False
 
 PREFIX = "ulkng:"
 URL_HASH_NAME = "url"

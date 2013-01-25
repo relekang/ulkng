@@ -3,12 +3,12 @@ import hashlib
 from redis import ConnectionPool
 from redis.client import Redis
 from utils import render_template, check_token
-from settings import REDIS_HOST, REDIS_PORT, REDIS_DB, URL_HASH_NAME, COUNT_HASH_NAME, LOG_HASH_NAME, TOKEN_HASH_NAME
+from settings import REDIS_HOST, REDIS_PORT, REDIS_DB, URL_HASH_NAME, COUNT_HASH_NAME, LOG_HASH_NAME, TOKEN_HASH_NAME, DEBUG
 import web
 from web import form
 
 
-web.config.debug = False
+web.config.debug = DEBUG
 redis_pool = ConnectionPool(
     host=REDIS_HOST, 
     port=REDIS_PORT, 
