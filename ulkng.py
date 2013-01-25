@@ -3,13 +3,18 @@ import hashlib
 from redis import ConnectionPool
 from redis.client import Redis
 from utils import render_template, URL_HASH_NAME, COUNT_HASH_NAME, check_token, LOG_HASH_NAME, TOKEN_HASH_NAME
+from settings import REDIS_HOST, REDIS_PORT, REDIS_DB
 import web
 from web import form
 
 
 web.config.debug = False
 render = web.template.render('templates/', base='base')
-redis_pool = ConnectionPool(host='localhost', port=6379, db=1)
+redis_pool = ConnectionPool(
+    host=REDIS_HOST, 
+    port=REDIS_PORT, 
+    db=REDIS_DB
+)
 
 urls = (
     '/', 'Index',
