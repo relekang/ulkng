@@ -14,8 +14,9 @@ TOKEN_HASH_NAME = "ulkng:tokens"
 def check_token(r):
     tokens = r.hgetall(TOKEN_HASH_NAME)
     try:
-        if web.input().token in tokens:
-            return (tokens[web.input().token], web.input().token)
+        auth_token = web.input().token
+        if auth_token in tokens:
+            return (tokens[auth_token], auth_token)
         else:
             raise web.notfound()
     except AttributeError:

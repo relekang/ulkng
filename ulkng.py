@@ -90,7 +90,7 @@ class Add:
             r.hset(COUNT_HASH_NAME, key, 0)
             r.hset(LOG_HASH_NAME, key, r.hget(TOKEN_HASH_NAME, web.input().token))
 
-        raise web.seeother('/%s/+' % key)
+        raise web.seeother('/%s/+?token=%s' % (key, user_id[1]))
 
 class Redirect:
     def GET(self, key):
