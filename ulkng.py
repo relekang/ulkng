@@ -36,7 +36,7 @@ class Index:
         for key in r.hgetall(URL_HASH_NAME):
             count += 1
 
-        return render_template('index.html', count=count, section_class='index', user_id=('', ''))
+        return render_template('index.html', count=count, section_class='index', user_id=None)
 
 class ViewAll:
     def GET(self):
