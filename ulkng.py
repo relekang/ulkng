@@ -7,7 +7,6 @@ from settings import REDIS_HOST, REDIS_PORT, REDIS_DB, URL_HASH_NAME, COUNT_HASH
 import web
 from web import form
 
-
 web.config.debug = DEBUG
 redis_pool = ConnectionPool(
     host=REDIS_HOST, 
@@ -139,4 +138,5 @@ app = web.application(urls, globals())
 application = app.wsgifunc()
 
 if __name__ == "__main__":
+    print 'DEBUG=%s' % DEBUG
     app.run()

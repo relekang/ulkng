@@ -13,6 +13,6 @@ LOG_HASH_NAME = "url:log"
 TOKEN_HASH_NAME = "ulkng:tokens"
 
 try:
-	import local_settings
+    from local_settings import *
 except ImportError:
-	pass
+    print "\033[91mNo local config\033[0m"
