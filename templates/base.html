@@ -8,8 +8,8 @@
 {% if user_id %}
     <nav>
         <div class="btn-group btn-toolbar">
-            <a href="/all/?token={{ user_id[1] }}" class="btn{% if is_all %} active{% endif %}">URLs</a>
-            <a href="/add/?token={{ user_id[1] }}" class="btn{% if is_add %} active{% endif %}">Add</a>
+            <a href="/all/{% if user_id[1] %}?token={{ user_id[1] }}{% endif %}" class="btn{% if is_all %} active{% endif %}">URLs</a>
+            <a href="/add/{% if user_id[1] %}?token={{ user_id[1] }}{% endif %}" class="btn{% if is_add %} active{% endif %}">Add</a>
         </div>
     </nav>
 {% endif %}
@@ -20,8 +20,9 @@
     </div>
 </section>
 <footer class="row-fluid">
-    {% if user_id %}
-        <div class="span12">You are identified as: {{ user_id[0] }}</div>{% endif %}
+    {% if user_id[1] %}
+        <div class="span12">You are identified as: {{ user_id[0] }}</div>
+        {% endif %}
 </footer>
 </body>
 </html>

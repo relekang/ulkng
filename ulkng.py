@@ -2,8 +2,8 @@
 import hashlib
 from redis import ConnectionPool
 from redis.client import Redis
-from utils import render_template, URL_HASH_NAME, COUNT_HASH_NAME, check_token, LOG_HASH_NAME, TOKEN_HASH_NAME
-from settings import REDIS_HOST, REDIS_PORT, REDIS_DB
+from utils import render_template, check_token
+from settings import REDIS_HOST, REDIS_PORT, REDIS_DB, URL_HASH_NAME, COUNT_HASH_NAME, LOG_HASH_NAME, TOKEN_HASH_NAME
 import web
 from web import form
 
@@ -93,9 +93,13 @@ class Add:
         if not r.hget(URL_HASH_NAME, key):
             r.hset(URL_HASH_NAME, key, url)
             r.hset(COUNT_HASH_NAME, key, 0)
-            r.hset(LOG_HASH_NAME, key, r.hget(TOKEN_HASH_NAME, web.input().token))
+            if user_id[1]:
+                r.hset(LOG_HASH_NAME, key, r.hget(TOKEN_HASH_NAME, web.input().token))
 
-        raise web.seeother('/%s/+?token=%s' % (key, user_id[1]))
+        if user_id[1] == '':
+            raise web.seeother('/%s/+' % key)
+        else:
+            raise web.seeother('/%s/+?token=%s' % (key, user_id[1]))
 
 class Redirect:
     def GET(self, key):

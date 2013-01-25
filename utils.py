@@ -2,17 +2,13 @@
 from jinja2 import Environment, FileSystemLoader
 import os
 import web
-
-
-PREFIX = "ulkng:"
-URL_HASH_NAME = "url"
-COUNT_HASH_NAME = "url:count"
-LOG_HASH_NAME = "url:log"
-TOKEN_HASH_NAME = "ulkng:tokens"
-
+import settings
 
 def check_token(r):
-    tokens = r.hgetall(TOKEN_HASH_NAME)
+    if not getattr(settings, 'USE_TOKENS', True):
+        return ('anonymous', '')
+        
+    tokens = r.hgetall(settings.TOKEN_HASH_NAME)
     try:
         auth_token = web.input().token
         if auth_token in tokens:
