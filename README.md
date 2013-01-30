@@ -15,10 +15,10 @@ Download it from [redis.io](http://redis.io) or install it with apt-get, Homebre
 
 ### Create virtualenvironment and install python dependencies
 
-    virtualenv venv                        # Create virtualenv
-    source venv/bin/activate               # Activate it
-    pip install -r requirements.txt        # Install python dependencies
-    redis-cli set ulkng:token "your token" # Set the token used for auth
+    virtualenv venv                                          # Create virtualenv
+    source venv/bin/activate                                 # Activate it
+    pip install -r requirements.txt                          # Install python dependencies
+    redis-cli hset ulkng:tokens <your token> "<your email>"  # Set the token used for auth
 
 ## Usage
     python ulkng.py
